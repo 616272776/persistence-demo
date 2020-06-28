@@ -13,7 +13,9 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -81,7 +83,6 @@ public class DomainService {
 
         // 3.对返回的节点进行初始化
         ArrayNode arrayNode = objectMapper.createArrayNode();
-
         if(node.isValueNode()){
             Persistence childenPersistence = new Persistence();
             childenPersistence.setPersistenceId(genUUID());
@@ -134,7 +135,7 @@ public class DomainService {
                 ArrayNode objectChildrenNode = objectMapper.createArrayNode();
                 while (arrayIt.hasNext()) {
                     ArrayNode jsonNodes = saveDomain(childenPersistence, arrayIt.next());
-                    objectChildrenNode.add(jsonNodes.toString());
+                    objectChildrenNode.addAll(jsonNodes);
                 }
                 childenPersistence.setChildrenPersistence(objectChildrenNode.toString());
 
@@ -148,7 +149,7 @@ public class DomainService {
                 ArrayNode arrayChildrenNode = objectMapper.createArrayNode();
                 while (arrayIt.hasNext()) {
                     ArrayNode jsonNodes = saveDomain(childenPersistence, arrayIt.next());
-                    arrayChildrenNode.add(jsonNodes.toString());
+                    arrayChildrenNode.addAll(jsonNodes);
                 }
                 childenPersistence.setChildrenPersistence(arrayChildrenNode.toString());
             }
